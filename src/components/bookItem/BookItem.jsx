@@ -1,21 +1,34 @@
+import { Badge, Card } from "react-bootstrap";
+import { IMAGE_DEFAULT } from "./BookItem.const";
+
 const BookItem = ({
     title,
     author,
     pageCount,
     rating,
-    imageUrl,
+    imageUrl = IMAGE_DEFAULT,
     isAvailable
 }) => {
-
     return (
-        <>
-            <h1>{title}</h1>
-            <h2>{author}</h2>
-            <p>{pageCount} páginas</p>
-            <p>{rating} estrellas</p>
-            <img alt="portada de libro" src={imageUrl} />
-            <p> {isAvailable ? "Disponible" : "No disponible"}</p>
-        </>
+        <Card style={{ width: '22rem' }} className="mx-3 mb-2">
+            <Card.Img
+                height={400}
+                variant="top"
+                src={imageUrl} />
+            <Card.Body>
+                <div className="mb-2">
+                    {
+                        isAvailable
+                            ? <Badge bg="success">Disponible</Badge>
+                            : <Badge bg="danger">Reservado</Badge>
+                    }
+                    <Card.Title>{title}</Card.Title>
+                    <Card.Subtitle>{author}</Card.Subtitle>
+                    <p>{pageCount} páginas</p>
+                    <p>{rating} estrellas</p>
+                </div>
+            </Card.Body>
+        </Card>
     )
 }
 
