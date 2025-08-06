@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Card, Col, Form, Row, Button } from "react-bootstrap"
 import { initialForm } from "./NewBook.data";
 
-const NewBook = () => {
+const NewBook = ({ onAddBook }) => {
     const [form, setForm] = useState(initialForm);
 
     const handleChangeForm = (newForm) => {
@@ -14,6 +14,7 @@ const NewBook = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
+        onAddBook(form)
         setForm(initialForm)
     }
 
