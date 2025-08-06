@@ -3,7 +3,7 @@ import BookItem from "../bookItem/BookItem"
 const Books = ({ books }) => {
     return (
         <>
-            <p>Usted ha seleccionado el libro: <b>LIBRO</b></p>
+            <p className="text-center">Usted ha seleccionado el libro: <b>LIBRO</b></p>
             <div className="d-flex justify-content-center flex-wrap">
                 <BookItem
                     title={books[0].title}
