@@ -1,4 +1,5 @@
-import { Badge, Card } from "react-bootstrap";
+import { useState } from "react";
+import { Badge, Button, Card } from "react-bootstrap";
 import { IMAGE_DEFAULT } from "./BookItem.const";
 
 const BookItem = ({
@@ -9,6 +10,13 @@ const BookItem = ({
     imageUrl = IMAGE_DEFAULT,
     isAvailable
 }) => {
+
+    const [bookTitle, setBookTitle] = useState(title);
+
+    const handleUpdateTitle = () => {
+        setBookTitle('Actualizado!')
+    }
+
     return (
         <Card style={{ width: '22rem' }} className="mx-3 mb-2">
             <Card.Img
@@ -22,11 +30,12 @@ const BookItem = ({
                             ? <Badge bg="success">Disponible</Badge>
                             : <Badge bg="danger">Reservado</Badge>
                     }
-                    <Card.Title>{title}</Card.Title>
+                    <Card.Title>{bookTitle}</Card.Title>
                     <Card.Subtitle>{author}</Card.Subtitle>
                     <p>{pageCount} páginas</p>
                     <p>{rating} estrellas</p>
                 </div>
+                <Button onClick={handleUpdateTitle}>Actualizar título</Button>
             </Card.Body>
         </Card>
     )
