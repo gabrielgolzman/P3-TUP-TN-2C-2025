@@ -4,26 +4,40 @@ import Search from "../shared/search/Search";
 
 const Books = ({ books }) => {
     const [selectedBook, setSelectedBook] = useState('');
+    const [searchValue, setSearchValue] = useState('');
 
     const handleSelectBook = (title) => {
         setSelectedBook(title)
     }
 
-    const booksMapped = books.map(book =>
-        <BookItem
-            key={book.id}
-            title={book.title}
-            author={book.author}
-            pageCount={book.pageCount}
-            rating={book.rating}
-            imageUrl={book.imageUrl}
-            isAvailable={book.isAvailable}
-            onSelectBook={handleSelectBook} />)
+    const handleSearch = (event) => {
+        setSearchValue(event.target.value)
+    }
+
+    const booksMapped = books
+        .filter(book => {
+            const searchUppercase = searchValue.toUpperCase();
+            return book.title.toUpperCase().includes(searchUppercase)
+                || book.author.toUpperCase().includes(searchUppercase)
+
+        })
+        .map(book =>
+            <BookItem
+                key={book.id}
+                title={book.title}
+                author={book.author}
+                pageCount={book.pageCount}
+                rating={book.rating}
+                imageUrl={book.imageUrl}
+                isAvailable={book.isAvailable}
+                onSelectBook={handleSelectBook} />)
 
     return (
-        <>
-            <Search entity="libros" />
-
+        <div className="d-flex flex-column align-items-center">
+            <Search
+                entity="libros"
+                onChange={handleSearch}
+                value={searchValue} />
             {
                 selectedBook &&
                 <p className="text-center">Usted ha seleccionado el libro: <b>{selectedBook}</b></p>
@@ -33,7 +47,7 @@ const Books = ({ books }) => {
                     booksMapped :
                     <p>No se encontraron libros</p>}
             </div>
-        </>
+        </div>
     )
 }
 
