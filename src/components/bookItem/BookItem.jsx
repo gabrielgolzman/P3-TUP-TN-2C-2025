@@ -7,10 +7,12 @@ const BookItem = ({
     pageCount,
     rating,
     imageUrl = IMAGE_DEFAULT,
-    isAvailable
+    isAvailable,
+    onSelectBook
 }) => {
-    const handleSelectBook = () => {
 
+    const handleSelectBook = () => {
+        onSelectBook(title)
     }
 
     return (

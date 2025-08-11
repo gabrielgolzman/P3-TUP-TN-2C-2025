@@ -1,11 +1,14 @@
+import { useState } from 'react';
 import { Row } from 'react-bootstrap';
 import { BOOKS } from './data/data';
 import Books from './components/books/Books';
 import NewBook from './components/newBook/NewBook';
 
 const App = () => {
+  const [bookData, setBookData] = useState(BOOKS);
+
   const handleAddBook = (book) => {
-    console.log(book)
+    setBookData((prevBooks) => [book, ...prevBooks]);
   }
 
   return (
@@ -15,7 +18,7 @@ const App = () => {
       </div>
       <Row className='d-flex justify-content-center'>
         <NewBook onAddBook={handleAddBook} />
-        <Books books={BOOKS} />
+        <Books books={bookData} />
       </Row>
     </>
   )

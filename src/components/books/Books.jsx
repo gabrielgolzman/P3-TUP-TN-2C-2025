@@ -1,9 +1,18 @@
+import { useState } from "react"
 import BookItem from "../bookItem/BookItem"
 
 const Books = ({ books }) => {
+    const [selectedBook, setSelectedBook] = useState('');
+
+    const handleSelectBook = (title) => {
+        setSelectedBook(title)
+    }
     return (
         <>
-            <p className="text-center">Usted ha seleccionado el libro: <b>LIBRO</b></p>
+            {
+                selectedBook &&
+                <p className="text-center">Usted ha seleccionado el libro: <b>{selectedBook}</b></p>
+            }
             <div className="d-flex justify-content-center flex-wrap">
                 <BookItem
                     title={books[0].title}
@@ -12,6 +21,7 @@ const Books = ({ books }) => {
                     rating={books[0].rating}
                     imageUrl={books[0].imageUrl}
                     isAvailable={books[0].isAvailable}
+                    onSelectBook={handleSelectBook}
                 />
                 <BookItem
                     title={books[1].title}
@@ -20,6 +30,8 @@ const Books = ({ books }) => {
                     rating={books[1].rating}
                     imageUrl={books[1].imageUrl}
                     isAvailable={books[1].isAvailable}
+                    onSelectBook={handleSelectBook}
+
                 />
                 <BookItem
                     title={books[2].title}
@@ -28,6 +40,7 @@ const Books = ({ books }) => {
                     rating={books[2].rating}
                     imageUrl={books[2].imageUrl}
                     isAvailable={books[2].isAvailable}
+                    onSelectBook={handleSelectBook}
                 />
             </div>
         </>
