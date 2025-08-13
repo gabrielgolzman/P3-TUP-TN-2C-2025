@@ -1,6 +1,6 @@
 import { useState } from "react"
 import BookItem from "../bookItem/BookItem"
-import Search from "../shared/search/Search";
+import Search from "../../shared/search/Search";
 
 const Books = ({ books }) => {
     const [selectedBook, setSelectedBook] = useState('');
