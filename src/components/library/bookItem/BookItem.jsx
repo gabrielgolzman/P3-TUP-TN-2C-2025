@@ -1,9 +1,8 @@
 import { Badge, Button, Card } from "react-bootstrap";
 import { StarFill, Star } from "react-bootstrap-icons";
-
-import { IMAGE_DEFAULT, STAR_QTY } from "./BookItem.const";
-import styles from './BookItem.module.css'
 import classNames from "classnames";
+import { IMAGE_DEFAULT, STAR_QTY } from "./BookItem.const";
+import classes from './BookItem.module.css'
 
 const BookItem = ({
     title,
@@ -24,7 +23,7 @@ const BookItem = ({
     }
 
     return (
-        <Card className={classNames('mx-3 mb-5', styles.cardContainer)}>
+        <Card className={classNames('mx-3 mb-5', classes.cardContainer)}>
             <Card.Img
                 height={400}
                 variant="top"
