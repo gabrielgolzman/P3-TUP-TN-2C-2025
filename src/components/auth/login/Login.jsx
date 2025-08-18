@@ -1,12 +1,15 @@
 import { useRef, useState } from "react"
 import { Button, Card, Col, Form, FormGroup, Row } from "react-bootstrap"
-import { initialErrors } from "./Login.data";
 
-const Login = () => {
+import { initialErrors } from "./Login.data";
+import { useNavigate } from "react-router";
+
+const Login = ({ onLogin }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState(initialErrors)
 
+    const navigate = useNavigate()
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
 
@@ -35,6 +38,7 @@ const Login = () => {
                 email: true
             }))
             emailRef.current.focus();
+
             return;
         }
 
@@ -50,7 +54,8 @@ const Login = () => {
         setErrors(initialErrors);
         setEmail('');
         setPassword('')
-        alert(`Su email es ${email} y su contraseña es: ${password}`)
+        onLogin()
+        navigate('/library')
     }
     return (
         <Card className="w-25 mt-5 mx-3 p-3 px-5 shadow">

@@ -2,7 +2,7 @@ import { useState } from "react"
 import BookItem from "../bookItem/BookItem"
 import Search from "../../shared/search/Search";
 
-const Books = ({ books }) => {
+const Books = ({ books, onDeleteBook }) => {
     const [selectedBook, setSelectedBook] = useState('');
     const [searchValue, setSearchValue] = useState('');
 
@@ -24,13 +24,15 @@ const Books = ({ books }) => {
         .map(book =>
             <BookItem
                 key={book.id}
+                id={book.id}
                 title={book.title}
                 author={book.author}
                 pageCount={book.pageCount}
                 rating={book.rating}
                 imageUrl={book.imageUrl}
                 isAvailable={book.isAvailable}
-                onSelectBook={handleSelectBook} />)
+                onSelectBook={handleSelectBook}
+                onDeleteBook={onDeleteBook} />)
 
     return (
         <div className="d-flex flex-column align-items-center">

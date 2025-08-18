@@ -1,38 +1,47 @@
+// Imports order
+
+// React library
+// Third party libraries
+
+// Utils
+
+// Custom components
+
+// CSS / SCSS
+
 import { useState } from 'react';
-import { Row } from 'react-bootstrap';
-import { BOOKS } from './data/data';
-import Books from './components/library/books/Books';
-import NewBook from './components/library/newBook/NewBook';
-import Search from './components/shared/search/Search';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
+
 import Login from './components/auth/login/Login';
+import Dashboard from './components/library/dashboard/Dashboard';
+import ErrorNotFound from './components/error/ErrorNotFound';
+import Protected from './components/protected/Protected';
 
 const App = () => {
-  const [bookData, setBookData] = useState(BOOKS);
+  const [loggedIn, setLoggedIn] = useState(false)
 
-  const handleAddBook = (book) => {
-    setBookData((prevBooks) => {
-      const maxId = Math.max(...prevBooks.map(book => book.id));
+  const handleLogin = () => {
+    setLoggedIn(true)
+  }
 
-      const newBook = {
-        ...book,
-        id: maxId + 1
-      }
-      return [newBook, ...prevBooks]
-
-    });
+  const handleLogout = () => {
+    setLoggedIn(false)
   }
 
   return (
-    <>
-      <div className='text-center mb-5'>
-        <h1>¡Bienvenidos a Book Champions App!</h1>
-      </div>
-      <Row className='d-flex justify-content-center'>
-        <NewBook onAddBook={handleAddBook} />
-        <Books books={bookData} />
-        {/* <Login /> */}
-      </Row>
-    </>
+    <div className='d-flex justify-content-center'>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Navigate to='/login' />} />
+          <Route path='/login' element={<Login onLogin={handleLogin} />} />
+          <Route path='/library' element={
+            <Protected isSignedIn={loggedIn}>
+              <Dashboard onLogout={handleLogout} />
+            </Protected>} />
+          <Route path='*' element={<ErrorNotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   )
 
 }

@@ -1,17 +1,21 @@
 import { Badge, Button, Card } from "react-bootstrap";
 import { StarFill, Star } from "react-bootstrap-icons";
 import classNames from "classnames";
+
 import { IMAGE_DEFAULT, STAR_QTY } from "./BookItem.const";
+
 import classes from './BookItem.module.css'
 
 const BookItem = ({
+    id,
     title,
     author,
     pageCount,
     rating,
     imageUrl = IMAGE_DEFAULT,
     isAvailable,
-    onSelectBook
+    onSelectBook,
+    onDeleteBook
 }) => {
 
     const ratingStars = Array.from({ length: STAR_QTY }, (_, index) =>
@@ -20,6 +24,10 @@ const BookItem = ({
 
     const handleSelectBook = () => {
         onSelectBook(title)
+    }
+
+    const handleDeleteBook = () => {
+        onDeleteBook(id)
     }
 
     return (
@@ -41,7 +49,7 @@ const BookItem = ({
                     {ratingStars}
                 </div>
                 <div className="d-flex justify-content-center mt-3">
-                    <Button className="me-3" variant="danger" onClick={() => { }}>Eliminar libro</Button>
+                    <Button className="me-3" variant="danger" onClick={handleDeleteBook}>Eliminar libro</Button>
                     <Button onClick={handleSelectBook}>Seleccionar libro</Button>
                 </div>
             </Card.Body>
