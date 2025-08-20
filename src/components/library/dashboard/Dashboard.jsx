@@ -7,10 +7,14 @@ import { initialDeleteBookModalState } from "./Dashboard.data";
 import NewBook from "../newBook/NewBook"
 import Books from "../books/Books"
 import DeleteModal from "../../shared/deleteModal/DeleteModal";
+import { Route, Routes, useNavigate } from "react-router";
 
 const Dashboard = ({ onLogout }) => {
     const [bookData, setBookData] = useState(BOOKS);
     const [deleteBookModal, setDeleteBookModal] = useState(initialDeleteBookModalState);
+
+
+    const navigate = useNavigate();
 
     const handleAddBook = (book) => {
         setBookData((prevBooks) => {
@@ -24,7 +28,6 @@ const Dashboard = ({ onLogout }) => {
 
         });
     }
-
 
     const handleDeleteBook = () => {
         setBookData(prevBookData =>
@@ -44,6 +47,9 @@ const Dashboard = ({ onLogout }) => {
         setDeleteBookModal(initialDeleteBookModalState)
     }
 
+    const handleNavigateToForm = () => {
+        navigate('/library/add-book')
+    }
 
     return (
         <>
@@ -57,11 +63,22 @@ const Dashboard = ({ onLogout }) => {
             <div className="flex-column">
                 <div className='text-center mb-5'>
                     <h1>¡Bienvenidos a Book Champions App!</h1>
-                    <Button onClick={onLogout}>Cerrar sesión</Button>
+                    <Button className="me-3" onClick={onLogout}>Cerrar sesión</Button>
+                    <Button variant="success" onClick={handleNavigateToForm}>Agregar libro</Button>
                 </div>
                 <Row className='d-flex justify-content-center'>
-                    <NewBook onAddBook={handleAddBook} />
-                    <Books books={bookData} onDeleteBook={handleOpenDeleteModal} />
+                    <Routes>
+                        <Route
+                            index
+                            element={<Books
+                                books={bookData}
+                                onDeleteBook={handleOpenDeleteModal} />} />
+                        <Route
+                            path="/add-book"
+                            element={<NewBook onAddBook={handleAddBook} />} />
+                    </Routes>
+                    {/* <NewBook onAddBook={handleAddBook} />
+                    <Books books={bookData} onDeleteBook={handleOpenDeleteModal} /> */}
                 </Row>
             </div>
         </>
