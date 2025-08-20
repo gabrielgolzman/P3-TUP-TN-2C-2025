@@ -34,10 +34,9 @@ const App = () => {
         <Routes>
           <Route path='/' element={<Navigate to='/login' />} />
           <Route path='/login' element={<Login onLogin={handleLogin} />} />
-          <Route path='/library' element={
-            <Protected isSignedIn={loggedIn}>
-              <Dashboard onLogout={handleLogout} />
-            </Protected>} />
+          {/* <Route element={<Protected isSignedIn={loggedIn} />}> */}
+          <Route path='/library/*' element={<Dashboard onLogout={handleLogout} />} />
+          {/* </Route> */}
           <Route path='*' element={<ErrorNotFound />} />
         </Routes>
       </BrowserRouter>
