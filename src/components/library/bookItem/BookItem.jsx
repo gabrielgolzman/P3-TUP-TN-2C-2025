@@ -27,7 +27,7 @@ const BookItem = ({
     }
 
     const handleDeleteBook = () => {
-        onDeleteBook(id)
+        onDeleteBook({ id, title })
     }
 
     return (
