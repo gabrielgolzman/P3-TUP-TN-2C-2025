@@ -48,7 +48,7 @@ const Dashboard = ({ onLogout }) => {
     }
 
     const handleNavigateToForm = () => {
-        navigate('/library/add-book')
+        navigate('/library/add-book', { replace: true })
     }
 
     return (
@@ -77,8 +77,6 @@ const Dashboard = ({ onLogout }) => {
                             path="/add-book"
                             element={<NewBook onAddBook={handleAddBook} />} />
                     </Routes>
-                    {/* <NewBook onAddBook={handleAddBook} />
-                    <Books books={bookData} onDeleteBook={handleOpenDeleteModal} /> */}
                 </Row>
             </div>
         </>
