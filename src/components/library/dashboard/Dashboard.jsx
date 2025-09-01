@@ -1,32 +1,44 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Row } from "react-bootstrap"
+import { Route, Routes, useNavigate } from "react-router";
 
-import { BOOKS } from "../../../data/data";
 import { initialDeleteBookModalState } from "./Dashboard.data";
 
 import NewBook from "../newBook/NewBook"
 import Books from "../books/Books"
+import BookDetails from "../bookDetails/BookDetails"
 import DeleteModal from "../../shared/deleteModal/DeleteModal";
-import { Route, Routes, useNavigate } from "react-router";
 
 const Dashboard = ({ onLogout }) => {
-    const [bookData, setBookData] = useState(BOOKS);
+    const [bookData, setBookData] = useState([]);
     const [deleteBookModal, setDeleteBookModal] = useState(initialDeleteBookModalState);
-
 
     const navigate = useNavigate();
 
+    useEffect(() => {
+        console.log("Dasboard component useEffect!")
+        fetch('http://localhost:3000/book')
+            .then(res => res.json())
+            .then(data => {
+                setBookData([...data])
+            })
+            .catch(err => console.log(err));
+    }, [])
+
     const handleAddBook = (book) => {
-        setBookData((prevBooks) => {
-            const maxId = Math.max(...prevBooks.map(book => book.id));
-
-            const newBook = {
-                ...book,
-                id: maxId + 1
+        fetch('http://localhost:3000/book', {
+            method: 'POST',
+            body: JSON.stringify(book),
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
             }
-            return [newBook, ...prevBooks]
-
-        });
+        },)
+            .then(res => res.json())
+            .then(data => {
+                setBookData((prevBooks) => [data, ...prevBooks]);
+            })
+            .catch(err => console.log(err));
     }
 
     const handleDeleteBook = () => {
@@ -51,6 +63,11 @@ const Dashboard = ({ onLogout }) => {
         navigate('/library/add-book', { replace: true })
     }
 
+    const handleLogout = () => {
+        navigate('/login');
+        onLogout();
+    }
+
     return (
         <>
             <DeleteModal
@@ -63,7 +80,7 @@ const Dashboard = ({ onLogout }) => {
             <div className="flex-column">
                 <div className='text-center mb-5'>
                     <h1>¡Bienvenidos a Book Champions App!</h1>
-                    <Button className="me-3" onClick={onLogout}>Cerrar sesión</Button>
+                    <Button className="me-3" onClick={handleLogout}>Cerrar sesión</Button>
                     <Button variant="success" onClick={handleNavigateToForm}>Agregar libro</Button>
                 </div>
                 <Row className='d-flex justify-content-center'>
@@ -73,6 +90,7 @@ const Dashboard = ({ onLogout }) => {
                             element={<Books
                                 books={bookData}
                                 onDeleteBook={handleOpenDeleteModal} />} />
+                        <Route path="/:id" element={<BookDetails />} />
                         <Route
                             path="/add-book"
                             element={<NewBook onAddBook={handleAddBook} />} />

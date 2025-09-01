@@ -18,14 +18,14 @@ import ErrorNotFound from './components/error/ErrorNotFound';
 import Protected from './components/protected/Protected';
 
 const App = () => {
-  const [loggedIn, setLoggedIn] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const handleLogin = () => {
     setLoggedIn(true)
   }
 
   const handleLogout = () => {
-    setLoggedIn(false)
+    setLoggedIn(false);
   }
 
   return (

@@ -30,6 +30,7 @@ const Books = ({ books, onDeleteBook }) => {
                 pageCount={book.pageCount}
                 rating={book.rating}
                 imageUrl={book.imageUrl}
+                summary={book.summary}
                 isAvailable={book.isAvailable}
                 onSelectBook={handleSelectBook}
                 onDeleteBook={onDeleteBook} />)

@@ -5,6 +5,7 @@ import classNames from "classnames";
 import { IMAGE_DEFAULT, STAR_QTY } from "./BookItem.const";
 
 import classes from './BookItem.module.css'
+import { useNavigate } from "react-router";
 
 const BookItem = ({
     id,
@@ -12,18 +13,34 @@ const BookItem = ({
     author,
     pageCount,
     rating,
+    summary,
     imageUrl = IMAGE_DEFAULT,
     isAvailable,
     onSelectBook,
     onDeleteBook
 }) => {
 
+    const navigate = useNavigate();
+
     const ratingStars = Array.from({ length: STAR_QTY }, (_, index) =>
         index < rating ? <StarFill key={index} /> : <Star key={index} />
     );
 
     const handleSelectBook = () => {
-        onSelectBook(title)
+        onSelectBook(title);
+        navigate(`${id}`, {
+            state: {
+                book: {
+                    title,
+                    author,
+                    rating,
+                    pageCount,
+                    summary,
+                    imageUrl,
+                    isAvailable,
+                }
+            }
+        })
     }
 
     const handleDeleteBook = () => {
@@ -35,7 +52,7 @@ const BookItem = ({
             <Card.Img
                 height={400}
                 variant="top"
-                src={imageUrl} />
+                src={imageUrl?.length ? imageUrl : null} />
             <Card.Body>
                 <div className="mb-2">
                     {

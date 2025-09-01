@@ -2,15 +2,24 @@
 
 import { Badge, Button, Card } from "react-bootstrap";
 import { Star, StarFill } from "react-bootstrap-icons";
+import { useLocation, useNavigate } from "react-router";
 
 const BookDetails = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const { title, author, pageCount, summary, imageUrl, rating, available } = location.state.book;
+
+    const clickHandler = () => {
+        navigate("/library");
+    };
 
     const ratingStars = Array.from({ length: 5 }, (_, index) =>
         index < rating ? <StarFill key={index} /> : <Star key={index} />
     );
 
     return (
-        <Card className="my-3 w-25">
+        <Card className="my-3 w-25 p-0">
             <Card.Img
                 height={500}
                 variant="top"

@@ -2,9 +2,12 @@ import { useState } from "react"
 import { Card, Col, Form, Row, Button } from "react-bootstrap"
 
 import { initialForm } from "./NewBook.data";
+import { useNavigate } from "react-router";
 
 const NewBook = ({ onAddBook }) => {
     const [form, setForm] = useState(initialForm);
+
+    const navigate = useNavigate();
 
     const handleChangeForm = (newForm) => {
         setForm((prevForm) => ({
@@ -19,8 +22,12 @@ const NewBook = ({ onAddBook }) => {
         setForm(initialForm)
     }
 
+    const handleGoBack = () => {
+        navigate('/library');
+    }
+
     return (
-        <Card className="mb-5 w-50" bg="success">
+        <Card className="mb-5 w-100" bg="success">
             <Card.Body>
                 <Form className="text-white" onSubmit={handleSubmit} >
                     <Row>
@@ -119,6 +126,9 @@ const NewBook = ({ onAddBook }) => {
                                     isAvailable: e.target.checked,
                                 })}
                                 value={form.isAvailable} />
+                            <Button variant="secondary" onClick={handleGoBack} type="button" className="mb-3">
+                                Volver
+                            </Button>
                             <Button type="submit">
                                 Agregar lectura
                             </Button>
