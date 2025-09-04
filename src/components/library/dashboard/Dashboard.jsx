@@ -8,6 +8,7 @@ import Books from "../books/Books"
 import BookDetails from "../bookDetails/BookDetails"
 import DeleteModal from "../../shared/deleteModal/DeleteModal";
 import BookForm from "../bookForm/BookForm";
+import { successToast } from "../../shared/notifications/notification";
 
 const Dashboard = ({ onLogout }) => {
     const [bookData, setBookData] = useState([]);
@@ -37,15 +38,32 @@ const Dashboard = ({ onLogout }) => {
             .then(res => res.json())
             .then(data => {
                 setBookData((prevBooks) => [data, ...prevBooks]);
+                successToast(`El libro ${data.title} fue agregado correctamente.`);
             })
             .catch(err => console.log(err));
     }
 
     const handleDeleteBook = () => {
-        setBookData(prevBookData =>
-            prevBookData.filter(book => book.id !== deleteBookModal.bookToDelete.id));
-        handleCloseDeleteModal();
-    }
+        const { id, title } = deleteBookModal.bookToDelete;
+
+        fetch(`http://localhost:3000/book/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
+        })
+            .then(res => res.text())
+            .then(message => {
+                console.log(message);
+                successToast(`El libro "${title}" fue eliminado correctamente.`);
+                setBookData(prevBooks => prevBooks.filter(book => book.id !== id));
+                handleCloseDeleteModal();
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    };
 
     const handleOpenDeleteModal = (book) => {
         setDeleteBookModal(prevDeleteBookModal => ({

@@ -3,6 +3,7 @@ import { Card, Col, Form, Row, Button } from "react-bootstrap"
 
 import { initialForm } from "./NewBook.data";
 import { useNavigate } from "react-router";
+import { errorToast } from "../../shared/notifications/notification";
 
 const NewBook = ({ onAddBook }) => {
     const [form, setForm] = useState(initialForm);
@@ -18,6 +19,12 @@ const NewBook = ({ onAddBook }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
+
+        if (!form.title || !form.author){
+            errorToast("El autor y/o titulo son requeridos.");
+            return;
+        }
+
         onAddBook(form)
         setForm(initialForm)
     }
@@ -33,7 +40,7 @@ const NewBook = ({ onAddBook }) => {
                     <Row>
                         <Col md={6}>
                             <Form.Group className="mb-3" controlId="title">
-                                <Form.Label>Título</Form.Label>
+                                <Form.Label>Título<span className="text-danger">*</span></Form.Label>
                                 <Form.Control
                                     type="text"
                                     placeholder="Ingresar título"
@@ -46,7 +53,7 @@ const NewBook = ({ onAddBook }) => {
                         </Col>
                         <Col md={6}>
                             <Form.Group className="mb-3" controlId="author">
-                                <Form.Label>Autor</Form.Label>
+                                <Form.Label>Autor<span className="text-danger">*</span></Form.Label>
                                 <Form.Control
                                     type="text"
                                     placeholder="Ingresar autor"
