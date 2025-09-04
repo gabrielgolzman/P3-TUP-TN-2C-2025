@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { errorToast } from "../../shared/notifications/notification";
 import { Card, Col, Form, Row, Button } from "react-bootstrap";
+import { errorToast } from "../../shared/notifications/notification";
 
 const BookForm = ({
     book,
@@ -15,7 +15,7 @@ const BookForm = ({
     const [rating, setRating] = useState(book?.rating);
     const [pageCount, setPageCount] = useState(book?.pageCount);
     const [imageUrl, setImageUrl] = useState(book?.imageUrl);
-    const [available, setAvailable] = useState(book?.isAvailable);
+    const [isAvailable, setIsAvailable] = useState(book?.isAvailable);
 
     const navigate = useNavigate();
 
@@ -34,7 +34,7 @@ const BookForm = ({
             rating,
             pageCount,
             imageUrl,
-            isAvailable: available,
+            isAvailable,
         };
 
         onAddBook(newBook);
@@ -46,7 +46,7 @@ const BookForm = ({
             setRating(null);
             setPageCount(null);
             setImageUrl("");
-            setAvailable(false);
+            setIsAvailable(false);
         }
     };
 
@@ -59,7 +59,7 @@ const BookForm = ({
             rating: parseInt(rating, 10),
             pageCount: parseInt(pageCount, 10),
             imageUrl,
-            available,
+            isAvailable,
         };
 
         fetch(`http://localhost:3000/book/${book.id}`, {
@@ -174,8 +174,8 @@ const BookForm = ({
                                 id="available"
                                 className="mb-3"
                                 label="¿Disponible?"
-                                checked={available}
-                                onChange={(e) => setAvailable(e.target.checked)}
+                                checked={isAvailable}
+                                onChange={(e) => setIsAvailable(e.target.checked)}
                             />
                             <Button
                                 variant="secondary"

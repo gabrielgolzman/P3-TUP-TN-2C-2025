@@ -1,6 +1,5 @@
 import { Bounce, toast } from "react-toastify";
 
-
 const defaultNotificationConfig = {
     position: "top-right",
     autoClose: 5000,
@@ -13,14 +12,12 @@ const defaultNotificationConfig = {
     transition: Bounce,
 };
 
-
 export const errorToast = (message, config) => {
     return toast.error(message, {
         ...defaultNotificationConfig,
         ...config,
     });
 };
-
 
 export const successToast = (message, config) => {
     return toast.success(message, {
