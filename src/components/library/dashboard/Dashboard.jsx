@@ -4,10 +4,10 @@ import { Route, Routes, useNavigate } from "react-router";
 
 import { initialDeleteBookModalState } from "./Dashboard.data";
 
-import NewBook from "../newBook/NewBook"
 import Books from "../books/Books"
 import BookDetails from "../bookDetails/BookDetails"
 import DeleteModal from "../../shared/deleteModal/DeleteModal";
+import BookForm from "../bookForm/BookForm";
 
 const Dashboard = ({ onLogout }) => {
     const [bookData, setBookData] = useState([]);
@@ -93,7 +93,7 @@ const Dashboard = ({ onLogout }) => {
                         <Route path="/:id" element={<BookDetails />} />
                         <Route
                             path="/add-book"
-                            element={<NewBook onAddBook={handleAddBook} />} />
+                            element={<BookForm onAddBook={handleAddBook} />} />
                     </Routes>
                 </Row>
             </div>

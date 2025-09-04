@@ -8,7 +8,7 @@ const BookDetails = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const { title, author, pageCount, summary, imageUrl, rating, available } = location.state.book;
+    const { title, author, pageCount, summary, imageUrl, rating, isAvailable } = location.state.book;
 
     const clickHandler = () => {
         navigate("/library");
@@ -19,7 +19,7 @@ const BookDetails = () => {
     );
 
     return (
-        <Card className="my-3 w-25 p-0">
+        <Card className="my-3 w-75 p-0">
             <Card.Img
                 height={500}
                 variant="top"
@@ -27,7 +27,7 @@ const BookDetails = () => {
             />
             <Card.Body>
                 <div className="mb-2">
-                    {available ?
+                    {isAvailable ?
                         <Badge bg="success">Disponible</Badge>
                         :
                         <Badge bg="danger">Reservado</Badge>
