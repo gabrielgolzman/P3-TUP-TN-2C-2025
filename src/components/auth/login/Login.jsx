@@ -1,8 +1,10 @@
 import { useRef, useState } from "react"
 import { Button, Card, Col, Form, FormGroup, Row } from "react-bootstrap"
+import { useNavigate } from "react-router";
 
 import { initialErrors } from "./Login.data";
-import { useNavigate } from "react-router";
+
+import AuthContainer from "../authContainer/AuthContainer";
 
 const Login = ({ onLogin }) => {
     const [email, setEmail] = useState('');
@@ -57,49 +59,52 @@ const Login = ({ onLogin }) => {
         onLogin()
         navigate('/library')
     }
+
+    const handleRegisterClick = () => {
+        navigate("/register")
+    }
     return (
-        <Card className="w-25 mt-5 mx-3 p-3 px-5 shadow">
-            <Card.Body>
-                <Row className="mb-2">
-                    <h5>¡Bienvenidos a Books Champion!</h5>
+        <AuthContainer>
+            <Form onSubmit={handleSubmit}>
+                <FormGroup className="mb-4">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                        ref={emailRef}
+                        autoComplete="email"
+                        type="email"
+                        placeholder="Ingresar email"
+                        className={errors.email && "border border-danger"}
+                        value={email}
+                        onChange={handleEmailChange} />
+                    {errors.email && <p className="text-danger">¡El email es campo obligatorio!</p>}
+                </FormGroup>
+                <FormGroup className="mb-4">
+                    <Form.Label>Contraseña</Form.Label>
+                    <Form.Control
+                        ref={passwordRef}
+                        autoComplete="current-pasword"
+                        type="password"
+                        placeholder="Ingresar contraseña"
+                        className={errors.password && "border border-danger"}
+                        value={password}
+                        onChange={handlePasswordChange}
+                    />
+                    {errors.password && <p className="text-danger">¡La contraseña es campo obligatorio!</p>}
+                </FormGroup>
+                <Row>
+                    <Col />
+                    <Col md={6} className="d-flex justify-content-end">
+                        <Button variant="secondary" type="submit">
+                            Iniciar sesión
+                        </Button>
+                    </Col>
                 </Row>
-                <Form onSubmit={handleSubmit}>
-                    <FormGroup className="mb-4">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control
-                            ref={emailRef}
-                            autoComplete="email"
-                            type="email"
-                            placeholder="Ingresar email"
-                            className={errors.email && "border border-danger"}
-                            value={email}
-                            onChange={handleEmailChange} />
-                        {errors.email && <p className="text-danger">¡El email es campo obligatorio!</p>}
-                    </FormGroup>
-                    <FormGroup className="mb-4">
-                        <Form.Label>Contraseña</Form.Label>
-                        <Form.Control
-                            ref={passwordRef}
-                            autoComplete="current-pasword"
-                            type="password"
-                            placeholder="Ingresar contraseña"
-                            className={errors.password && "border border-danger"}
-                            value={password}
-                            onChange={handlePasswordChange}
-                        />
-                        {errors.password && <p className="text-danger">¡La contraseña es campo obligatorio!</p>}
-                    </FormGroup>
-                    <Row>
-                        <Col />
-                        <Col md={6} className="d-flex justify-content-end">
-                            <Button variant="secondary" type="submit">
-                                Iniciar sesión
-                            </Button>
-                        </Col>
-                    </Row>
-                </Form>
-            </Card.Body>
-        </Card>
+                <Row className="mt-4">
+                    <p className="text-center fw-bold">¿No posee cuenta?</p>
+                    <Button onClick={handleRegisterClick}>Registrarse</Button>
+                </Row>
+            </Form>
+        </AuthContainer>
     )
 }
 
