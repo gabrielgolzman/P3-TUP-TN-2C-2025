@@ -3,8 +3,6 @@ import { useNavigate } from "react-router"
 import { Form, Button, Col, FormGroup, Row } from "react-bootstrap"
 
 import AuthContainer from "../authContainer/AuthContainer"
-import ToggleTheme from "../../ui/toggleTheme/ToggleTheme"
-import ComboLanguage from "../../ui/toggleLanguage/ComboLanguage"
 
 const Register = () => {
     const [name, setName] = useState("");
@@ -42,10 +40,6 @@ const Register = () => {
     return (
         <AuthContainer>
             <Form onSubmit={handleRegister}>
-                <FormGroup>
-                    <ComboLanguage />
-                    <ToggleTheme />
-                </FormGroup>
                 <FormGroup className="mb-4">
                     <Form.Control
                         autoComplete="username"

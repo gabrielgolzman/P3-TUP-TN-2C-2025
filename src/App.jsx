@@ -16,6 +16,7 @@ import Login from './components/auth/login/Login';
 import Dashboard from './components/library/dashboard/Dashboard';
 import ErrorNotFound from './components/error/ErrorNotFound';
 import Protected from './components/protected/Protected';
+import Register from './components/auth/register/Register';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
