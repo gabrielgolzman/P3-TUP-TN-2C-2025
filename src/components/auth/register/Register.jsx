@@ -32,6 +32,22 @@ const Register = () => {
     const handleRegister = (event) => {
         event.preventDefault();
 
+        fetch("http://localhost:3000/register", {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: "POST",
+            body: JSON.stringify({
+                name,
+                email,
+                password
+            })
+        })
+            .then(res => res.json())
+            .then(data => console.log(data))
+            .catch(err => console.log(err))
+
+
     }
 
     const handleLoginClick = () => {

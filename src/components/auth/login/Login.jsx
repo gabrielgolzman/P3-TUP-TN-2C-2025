@@ -56,6 +56,19 @@ const Login = ({ onLogin }) => {
         setErrors(initialErrors);
         setEmail('');
         setPassword('')
+        fetch("http://localhost:3000/login", {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: "POST",
+            body: JSON.stringify({
+                email,
+                password
+            })
+        })
+            .then(res => res.json())
+            .then(data => console.log(data))
+            .catch(err => console.log(err))
         onLogin()
         navigate('/library')
     }
