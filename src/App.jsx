@@ -17,6 +17,7 @@ import Dashboard from './components/library/dashboard/Dashboard';
 import ErrorNotFound from './components/error/ErrorNotFound';
 import Protected from './components/protected/Protected';
 import Register from './components/auth/register/Register';
+import { ToastContainer } from 'react-toastify';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -42,6 +43,8 @@ const App = () => {
           <Route path='*' element={<ErrorNotFound />} />
         </Routes>
       </BrowserRouter>
+
+      <ToastContainer />
     </div>
   )
 

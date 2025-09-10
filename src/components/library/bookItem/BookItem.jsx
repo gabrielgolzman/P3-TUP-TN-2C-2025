@@ -1,11 +1,11 @@
 import { Badge, Button, Card } from "react-bootstrap";
+import { useNavigate } from "react-router";
 import { StarFill, Star } from "react-bootstrap-icons";
 import classNames from "classnames";
 
 import { IMAGE_DEFAULT, STAR_QTY } from "./BookItem.const";
 
 import classes from './BookItem.module.css'
-import { useNavigate } from "react-router";
 
 const BookItem = ({
     id,
