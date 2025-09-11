@@ -82,6 +82,7 @@ const Dashboard = ({ onLogout }) => {
     }
 
     const handleLogout = () => {
+        localStorage.removeItem("book-champions-token");
         navigate('/login');
         onLogout();
     }

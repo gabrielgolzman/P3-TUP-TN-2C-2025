@@ -3,6 +3,7 @@ import { useNavigate } from "react-router"
 import { Form, Button, Col, FormGroup, Row } from "react-bootstrap"
 
 import AuthContainer from "../authContainer/AuthContainer"
+import { errorToast, successToast } from "../../shared/notifications/notification"
 
 const Register = () => {
     const [name, setName] = useState("");
@@ -19,18 +20,36 @@ const Register = () => {
 
     const handleNameChange = (e) => {
         setName(e.target.value);
+        setErrors((prevState) => ({ ...prevState, name: false }));
     }
 
     const handleEmailChange = (e) => {
         setEmail(e.target.value)
+        setErrors((prevState) => ({ ...prevState, email: false }));
     }
 
     const handlePasswordChange = (e) => {
-        setPassword(e.target.value)
+        setPassword(e.target.value);
+        setErrors((prevState) => ({ ...prevState, password: false }));
     }
 
     const handleRegister = (event) => {
         event.preventDefault();
+
+        if (!name) {
+            setErrors((prevState) => ({ ...prevState, name: true }));
+            return;
+        }
+
+        if (!email) {
+            setErrors((prevState) => ({ ...prevState, email: true }));
+            return;
+        }
+
+        if (!password) {
+            setErrors((prevState) => ({ ...prevState, password: true }));
+            return;
+        }
 
         fetch("http://localhost:3000/register", {
             headers: {
@@ -43,11 +62,16 @@ const Register = () => {
                 password
             })
         })
-            .then(res => res.json())
-            .then(data => console.log(data))
+            .then(res => res.json().then(data => {
+                if (!res.ok){
+                    errorToast(data.message);
+                    return;
+                }
+
+                successToast(data.message);
+                navigate("/login");
+            }))
             .catch(err => console.log(err))
-
-
     }
 
     const handleLoginClick = () => {

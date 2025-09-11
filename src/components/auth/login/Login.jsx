@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { initialErrors } from "./Login.data";
 
 import AuthContainer from "../authContainer/AuthContainer";
+import { errorToast } from "../../shared/notifications/notification";
 
 const Login = ({ onLogin }) => {
     const [email, setEmail] = useState('');
@@ -66,11 +67,18 @@ const Login = ({ onLogin }) => {
                 password
             })
         })
-            .then(res => res.json())
-            .then(data => console.log(data))
+            .then(res => res.json().then(data => {
+                if (!res.ok) {
+                    errorToast(data.message);
+                    return;
+                }
+
+                localStorage.setItem("book-champions-token", data);
+                onLogin()
+                navigate('/library')
+            }))
             .catch(err => console.log(err))
-        onLogin()
-        navigate('/library')
+
     }
 
     const handleRegisterClick = () => {
