@@ -66,7 +66,8 @@ const BookForm = ({
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                "Accept": "application/json",
+                 "Authorization": `Bearer ${localStorage.getItem("book-champions-token")}`,
             },
             body: JSON.stringify(bookData)
         })

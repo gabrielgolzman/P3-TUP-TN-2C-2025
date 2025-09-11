@@ -1,5 +1,5 @@
 import { useRef, useState } from "react"
-import { Button, Card, Col, Form, FormGroup, Row } from "react-bootstrap"
+import { Button, Col, Form, FormGroup, Row } from "react-bootstrap"
 import { useNavigate } from "react-router";
 
 import { initialErrors } from "./Login.data";

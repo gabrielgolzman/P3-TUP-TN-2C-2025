@@ -18,7 +18,11 @@ const Dashboard = ({ onLogout }) => {
 
     useEffect(() => {
         console.log("Dasboard component useEffect!")
-        fetch('http://localhost:3000/book')
+        fetch('http://localhost:3000/book', {
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("book-champions-token")}`,
+            }
+        })
             .then(res => res.json())
             .then(data => {
                 setBookData([...data])
@@ -32,7 +36,8 @@ const Dashboard = ({ onLogout }) => {
             body: JSON.stringify(book),
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                "Accept": "application/json",
+                 "Authorization": `Bearer ${localStorage.getItem("book-champions-token")}`,
             }
         },)
             .then(res => res.json())
@@ -51,6 +56,7 @@ const Dashboard = ({ onLogout }) => {
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
+                 "Authorization": `Bearer ${localStorage.getItem("book-champions-token")}`,
             },
         })
             .then(res => res.text())
