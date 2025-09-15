@@ -1,10 +1,11 @@
 import { useRef, useState } from "react"
-import { Button, Card, Col, Form, FormGroup, Row } from "react-bootstrap"
+import { Button, Col, Form, FormGroup, Row } from "react-bootstrap"
 import { useNavigate } from "react-router";
 
 import { initialErrors } from "./Login.data";
 
 import AuthContainer from "../authContainer/AuthContainer";
+import { errorToast } from "../../shared/notifications/notification";
 
 const Login = ({ onLogin }) => {
     const [email, setEmail] = useState('');
@@ -56,6 +57,7 @@ const Login = ({ onLogin }) => {
         setErrors(initialErrors);
         setEmail('');
         setPassword('')
+        
         fetch("http://localhost:3000/login", {
             headers: {
                 "Content-Type": "application/json",
@@ -66,11 +68,21 @@ const Login = ({ onLogin }) => {
                 password
             })
         })
-            .then(res => res.json())
-            .then(data => console.log(data))
-            .catch(err => console.log(err))
-        onLogin()
-        navigate('/library')
+            .then(async res => {
+                if (!res.ok) {
+                    const errData = await res.json();
+                    throw new Error(errData.message || "Algo ha salido mal");
+                }
+
+                return res.json();
+            })
+            .then(token => {
+                localStorage.setItem("book-champions-token", token);
+                onLogin()
+                navigate('/library')
+            })
+            .catch(err => errorToast(err.message));
+
     }
 
     const handleRegisterClick = () => {
