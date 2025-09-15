@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Button, Row } from "react-bootstrap"
 import { Route, Routes, useLocation, useNavigate } from "react-router";
 
@@ -10,10 +10,13 @@ import DeleteModal from "../../shared/deleteModal/DeleteModal";
 import BookForm from "../bookForm/BookForm";
 import { errorToast, successToast } from "../../shared/notifications/notification";
 import { addBook, getBooks } from "./Dashboard.services";
+import { AuthContext } from "../../../services/authContext/AuthContext";
 
-const Dashboard = ({ onLogout }) => {
+const Dashboard = () => {
     const [bookData, setBookData] = useState([]);
     const [deleteBookModal, setDeleteBookModal] = useState(initialDeleteBookModalState);
+
+    const { onLogout } = useContext(AuthContext);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -28,7 +31,7 @@ const Dashboard = ({ onLogout }) => {
     }, [location])
 
     const handleAddBook = (enteredBook) => {
-        if(!enteredBook.title || !enteredBook.author) {
+        if (!enteredBook.title || !enteredBook.author) {
             errorToast('El autor y/o título son requeridos');
             return;
         }
@@ -50,7 +53,7 @@ const Dashboard = ({ onLogout }) => {
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
-                 "Authorization": `Bearer ${localStorage.getItem("book-champions-token")}`,
+                "Authorization": `Bearer ${localStorage.getItem("book-champions-token")}`,
             },
         })
             .then(res => res.text())
@@ -82,9 +85,8 @@ const Dashboard = ({ onLogout }) => {
     }
 
     const handleLogout = () => {
-        localStorage.removeItem("book-champions-token");
-        navigate('/login');
         onLogout();
+        navigate('/login');
     }
 
     return (

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useContext, useRef, useState } from "react"
 import { Button, Col, Form, FormGroup, Row } from "react-bootstrap"
 import { useNavigate } from "react-router";
 
@@ -6,11 +6,14 @@ import { initialErrors } from "./Login.data";
 
 import AuthContainer from "../authContainer/AuthContainer";
 import { errorToast } from "../../shared/notifications/notification";
+import { AuthContext } from "../../../services/authContext/AuthContext";
 
-const Login = ({ onLogin }) => {
+const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState(initialErrors)
+
+    const { onLogin } = useContext(AuthContext)
 
     const navigate = useNavigate()
     const emailRef = useRef(null);
@@ -57,7 +60,7 @@ const Login = ({ onLogin }) => {
         setErrors(initialErrors);
         setEmail('');
         setPassword('')
-        
+
         fetch("http://localhost:3000/login", {
             headers: {
                 "Content-Type": "application/json",
@@ -77,8 +80,7 @@ const Login = ({ onLogin }) => {
                 return res.json();
             })
             .then(token => {
-                localStorage.setItem("book-champions-token", token);
-                onLogin()
+                onLogin(token)
                 navigate('/library')
             })
             .catch(err => errorToast(err.message));

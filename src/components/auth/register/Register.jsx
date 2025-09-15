@@ -17,7 +17,6 @@ const Register = () => {
 
     const navigate = useNavigate();
 
-
     const handleNameChange = (e) => {
         setName(e.target.value);
         setErrors((prevState) => ({ ...prevState, name: false }));
@@ -63,7 +62,7 @@ const Register = () => {
             })
         })
             .then(res => res.json().then(data => {
-                if (!res.ok){
+                if (!res.ok) {
                     errorToast(data.message);
                     return;
                 }
