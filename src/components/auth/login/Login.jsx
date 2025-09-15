@@ -57,6 +57,7 @@ const Login = ({ onLogin }) => {
         setErrors(initialErrors);
         setEmail('');
         setPassword('')
+        
         fetch("http://localhost:3000/login", {
             headers: {
                 "Content-Type": "application/json",
@@ -67,17 +68,20 @@ const Login = ({ onLogin }) => {
                 password
             })
         })
-            .then(res => res.json().then(data => {
+            .then(async res => {
                 if (!res.ok) {
-                    errorToast(data.message);
-                    return;
+                    const errData = await res.json();
+                    throw new Error(errData.message || "Algo ha salido mal");
                 }
 
-                localStorage.setItem("book-champions-token", data);
+                return res.json();
+            })
+            .then(token => {
+                localStorage.setItem("book-champions-token", token);
                 onLogin()
                 navigate('/library')
-            }))
-            .catch(err => console.log(err))
+            })
+            .catch(err => errorToast(err.message));
 
     }
 

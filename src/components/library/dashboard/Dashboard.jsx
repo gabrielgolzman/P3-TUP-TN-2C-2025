@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Row } from "react-bootstrap"
-import { Route, Routes, useNavigate } from "react-router";
+import { Route, Routes, useLocation, useNavigate } from "react-router";
 
 import { initialDeleteBookModalState } from "./Dashboard.data";
 
@@ -8,44 +8,38 @@ import Books from "../books/Books"
 import BookDetails from "../bookDetails/BookDetails"
 import DeleteModal from "../../shared/deleteModal/DeleteModal";
 import BookForm from "../bookForm/BookForm";
-import { successToast } from "../../shared/notifications/notification";
+import { errorToast, successToast } from "../../shared/notifications/notification";
+import { addBook, getBooks } from "./Dashboard.services";
 
 const Dashboard = ({ onLogout }) => {
     const [bookData, setBookData] = useState([]);
     const [deleteBookModal, setDeleteBookModal] = useState(initialDeleteBookModalState);
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
-        console.log("Dasboard component useEffect!")
-        fetch('http://localhost:3000/book', {
-            headers: {
-                "Authorization": `Bearer ${localStorage.getItem("book-champions-token")}`,
-            }
-        })
-            .then(res => res.json())
-            .then(data => {
-                setBookData([...data])
-            })
-            .catch(err => console.log(err));
-    }, [])
+        if (location.pathname === "/library") {
+            getBooks(
+                data => setBookData([...data]),
+                err => errorToast(err)
+            )
+        }
+    }, [location])
 
-    const handleAddBook = (book) => {
-        fetch('http://localhost:3000/book', {
-            method: 'POST',
-            body: JSON.stringify(book),
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                 "Authorization": `Bearer ${localStorage.getItem("book-champions-token")}`,
-            }
-        },)
-            .then(res => res.json())
-            .then(data => {
+    const handleAddBook = (enteredBook) => {
+        if(!enteredBook.title || !enteredBook.author) {
+            errorToast('El autor y/o título son requeridos');
+            return;
+        }
+        addBook(
+            enteredBook,
+            data => {
                 setBookData((prevBooks) => [data, ...prevBooks]);
                 successToast(`El libro ${data.title} fue agregado correctamente.`);
-            })
-            .catch(err => console.log(err));
+            },
+            err => errorToast(err)
+        )
     }
 
     const handleDeleteBook = () => {
