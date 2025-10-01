@@ -67,7 +67,7 @@ const BookForm = ({
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
-                 "Authorization": `Bearer ${localStorage.getItem("book-champions-token")}`,
+                "Authorization": `Bearer ${localStorage.getItem("book-champions-token")}`,
             },
             body: JSON.stringify(bookData)
         })

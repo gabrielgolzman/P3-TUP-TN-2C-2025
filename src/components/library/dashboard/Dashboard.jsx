@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Button, Row } from "react-bootstrap"
+import { Button, Row, Spinner } from "react-bootstrap"
 import { Route, Routes, useLocation, useNavigate } from "react-router";
 
 import { initialDeleteBookModalState } from "./Dashboard.data";
@@ -9,8 +9,9 @@ import BookDetails from "../bookDetails/BookDetails"
 import DeleteModal from "../../shared/deleteModal/DeleteModal";
 import BookForm from "../bookForm/BookForm";
 import { errorToast, successToast } from "../../shared/notifications/notification";
-import { addBook, getBooks } from "./Dashboard.services";
+import { addBook } from "./Dashboard.services";
 import { AuthContext } from "../../../services/authContext/AuthContext";
+import useFetch from "../../../hooks/useFetch/useFetch";
 
 const Dashboard = () => {
     const [bookData, setBookData] = useState([]);
@@ -21,11 +22,21 @@ const Dashboard = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    const { get, isLoading } = useFetch();
+
     useEffect(() => {
         if (location.pathname === "/library") {
-            getBooks(
-                data => setBookData([...data]),
-                err => errorToast(err)
+            console.log(isLoading)
+            get(
+                "/book",
+                true,
+                (data) => {
+                    console.log(isLoading);
+                    setBookData([...data])
+                },
+                (err) => {
+                    errorToast(err.message)
+                }
             )
         }
     }, [location])
@@ -47,7 +58,6 @@ const Dashboard = () => {
 
     const handleDeleteBook = () => {
         const { id, title } = deleteBookModal.bookToDelete;
-
         fetch(`http://localhost:3000/book/${id}`, {
             method: "DELETE",
             headers: {
@@ -108,9 +118,11 @@ const Dashboard = () => {
                     <Routes>
                         <Route
                             index
-                            element={<Books
-                                books={bookData}
-                                onDeleteBook={handleOpenDeleteModal} />} />
+                            element={
+
+                                <Books
+                                    books={bookData}
+                                    onDeleteBook={handleOpenDeleteModal} />} />
                         <Route path="/:id" element={<BookDetails />} />
                         <Route
                             path="/add-book"

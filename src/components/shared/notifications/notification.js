@@ -13,6 +13,7 @@ const defaultNotificationConfig = {
 };
 
 export const errorToast = (message, config) => {
+    console.log(message)
     return toast.error(message, {
         ...defaultNotificationConfig,
         ...config,

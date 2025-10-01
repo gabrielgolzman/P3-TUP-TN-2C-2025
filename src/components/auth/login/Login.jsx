@@ -7,17 +7,21 @@ import { initialErrors } from "./Login.data";
 import AuthContainer from "../authContainer/AuthContainer";
 import { errorToast } from "../../shared/notifications/notification";
 import { AuthContext } from "../../../services/authContext/AuthContext";
+import useFetch from "../../../hooks/useFetch/useFetch";
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState(initialErrors)
 
+    const emailRef = useRef(null);
+    const passwordRef = useRef(null);
+
     const { onLogin } = useContext(AuthContext)
 
     const navigate = useNavigate()
-    const emailRef = useRef(null);
-    const passwordRef = useRef(null);
+
+    const { post } = useFetch()
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
@@ -61,30 +65,18 @@ const Login = () => {
         setEmail('');
         setPassword('')
 
-        fetch("http://localhost:3000/login", {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            method: "POST",
-            body: JSON.stringify({
+        post("/login",
+            false,
+            {
                 email,
                 password
-            })
-        })
-            .then(async res => {
-                if (!res.ok) {
-                    const errData = await res.json();
-                    throw new Error(errData.message || "Algo ha salido mal");
-                }
-
-                return res.json();
-            })
-            .then(token => {
+            },
+            token => {
                 onLogin(token)
                 navigate('/library')
-            })
-            .catch(err => errorToast(err.message));
-
+            },
+            err => errorToast(err.message)
+        )
     }
 
     const handleRegisterClick = () => {
